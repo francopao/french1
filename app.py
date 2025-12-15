@@ -2,34 +2,50 @@ import streamlit as st
 import json
 import random
 from gtts import gTTS
-import os
-from tracker import update_progress
+from io import BytesIO
 
-st.set_page_config(layout="centered")
+# --------------------------------------------------
+# CONFIG
+# --------------------------------------------------
+st.set_page_config(
+    page_title="French Trading Tutor",
+    layout="centered"
+)
+
 st.title("🇫🇷 French Trading Tutor")
 
-mode = st.radio("Modo:", ["Commute", "Desk"])
+# --------------------------------------------------
+# MODE
+# --------------------------------------------------
+mode = st.radio(
+    "Selecciona modo:",
+    ["Commute (audio)", "Desk (lectura)", "Review rápido"]
+)
 
-with open("content/fx_fi_dialogues.json") as f:
-    dialogs = json.load(f)
+# --------------------------------------------------
+# LOAD CONTENT
+# --------------------------------------------------
+with open("content/fx.json", "r", encoding="utf-8") as f:
+    fx_data = json.load(f)
 
-filtered = [d for d in dialogs if mode.lower() in d["mode"]]
-dialog = random.choice(filtered)
+lesson = random.choice(fx_data)
 
-st.subheader(f"{dialog['category']} | {dialog['topic']}")
+# --------------------------------------------------
+# CONTENT
+# --------------------------------------------------
+st.subheader("📈 Contexto FX")
 
-# Audio
-tts = gTTS(dialog["text"], lang="fr")
-tts.save("audio/temp.mp3")
-st.audio("audio/temp.mp3")
+if mode == "Commute (audio)":
+    mp3_fp = BytesIO()
+    tts = gTTS(lesson["text"], lang="fr")
+    tts.write_to_fp(mp3_fp)
+    mp3_fp.seek(0)
 
-st.write(dialog["text"])
-st.write("❓", dialog["question"])
+    st.audio(mp3_fp, format="audio/mp3")
 
-if st.button("Marcar como completado"):
-    update_progress(
-        dialog_id=dialog["id"],
-        keywords=dialog["keywords"],
-        minutes=7 if mode == "Commute" else 12
-    )
-    st.success("Session guardada ✔️")
+st.markdown(f"**🗞️ Frase:** {lesson['text']}")
+st.markdown(f"**❓ Pregunta:** {lesson['question']}")
+
+if mode == "Review rápido":
+    st.markdown("**🔑 Keywords:**")
+    st.write(", ".join(lesson["keywords"]))
