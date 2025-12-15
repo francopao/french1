@@ -1,7 +1,15 @@
-[
-  {
-    "text": "L'euro se renforce face au dollar après les commentaires hawkish de la BCE.",
-    "question": "Pourquoi l'euro monte aujourd'hui ?",
-    "keywords": ["euro", "dollar", "BCE", "hawkish"]
-  }
-]
+{
+  "id": "FX_RATES_US_EU_SPREAD",
+  "domain": ["FX", "Rates"],
+  "level": "Intermediate",
+  "scenario": "Cross-asset discussion",
+  "text": "Le spread de taux entre les Treasuries américains et les obligations allemandes se creuse, exerçant une pression baissière sur l’euro.",
+  "question": "Pourquoi un élargissement du différentiel de taux US–Allemagne est négatif pour l’EUR ?",
+  "keywords": ["spread de taux", "Treasuries", "Bund", "EUR/USD"],
+  "theory": [
+    "Parité des taux d’intérêt",
+    "Flux de capitaux internationaux"
+  ],
+  "desk_phrase": "Le différentiel de rendement joue clairement en faveur du dollar.",
+  "follow_up": "Quel type d’investisseur est le plus sensible à ce spread ?"
+}
