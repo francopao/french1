@@ -1,3 +1,23 @@
+[
+  {
+    "id": "FX_EURUSD_BCE_HAWKISH_01",
+    "domain": ["FX", "Rates"],
+    "level": "Junior → Intermediate",
+    "scenario": "Morning market briefing",
+    "text": "L’euro s’apprécie face au dollar après des commentaires plus hawkish que prévu de la BCE, tandis que les rendements du Bund à 10 ans progressent.",
+    "question": "Explique le lien entre la politique monétaire de la BCE, les taux longs européens et l’évolution de l’EUR/USD.",
+    "keywords": ["BCE", "hawkish", "Bund 10Y", "EUR/USD", "politique monétaire"],
+    "theory": [
+      "Différentiel de taux d’intérêt",
+      "Transmission de la politique monétaire",
+      "Lien taux – devise"
+    ],
+    "desk_phrase": "Le marché price un resserrement monétaire plus rapide côté zone euro.",
+    "follow_up": "Quel serait l’impact si la Fed adopte un ton plus dovish la semaine prochaine ?"
+  }
+]
+
+
 {
   "id": "FX_RATES_US_EU_SPREAD",
   "domain": ["FX", "Rates"],
@@ -12,4 +32,20 @@
   ],
   "desk_phrase": "Le différentiel de rendement joue clairement en faveur du dollar.",
   "follow_up": "Quel type d’investisseur est le plus sensible à ce spread ?"
+}
+
+{
+  "id": "MACRO_RISK_OFF",
+  "domain": ["Macro", "FX"],
+  "level": "Interview level",
+  "scenario": "Risk sentiment",
+  "text": "Une montée des tensions géopolitiques déclenche un mouvement de risk-off sur les marchés mondiaux.",
+  "question": "Quelles devises bénéficient généralement d’un environnement risk-off et pourquoi ?",
+  "keywords": ["risk-off", "safe haven", "JPY", "CHF", "USD"],
+  "theory": [
+    "Appétit pour le risque",
+    "Devises refuge"
+  ],
+  "desk_phrase": "On observe un flight to quality.",
+  "follow_up": "Quel est l’impact sur les spreads de crédit ?"
 }
