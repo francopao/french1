@@ -1,1 +1,16 @@
+{
+  "id": "FI_CURVE_STEEPENING",
+  "domain": ["Fixed Income"],
+  "level": "Intermediate",
+  "scenario": "Rates trading",
+  "text": "La courbe des taux européens se pentifie alors que le marché anticipe une reprise économique plus forte.",
+  "question": "Quelle est la différence entre un steepening et un flattening de la courbe des taux ?",
+  "keywords": ["courbe des taux", "steepening", "croissance", "inflation"],
+  "theory": [
+    "Structure par terme des taux",
+    "Anticipations de croissance et d’inflation"
+  ],
+  "desk_phrase": "Le marché joue une normalisation de la croissance.",
+  "follow_up": "Quel serait l’impact sur les obligations longues ?"
+}
 
