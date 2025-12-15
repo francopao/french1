@@ -14,8 +14,8 @@
     ],
     "desk_phrase": "Le marché price un resserrement monétaire plus rapide côté zone euro.",
     "follow_up": "Quel serait l’impact si la Fed adopte un ton plus dovish la semaine prochaine ?"
-  }
-]
+  },
+
 
 
 {
@@ -32,7 +32,7 @@
   ],
   "desk_phrase": "Le différentiel de rendement joue clairement en faveur du dollar.",
   "follow_up": "Quel type d’investisseur est le plus sensible à ce spread ?"
-}
+},
 
 {
   "id": "MACRO_RISK_OFF",
@@ -48,4 +48,4 @@
   ],
   "desk_phrase": "On observe un flight to quality.",
   "follow_up": "Quel est l’impact sur les spreads de crédit ?"
-}
+}]
