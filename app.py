@@ -35,6 +35,7 @@ lesson = random.choice(fx_data)
 # --------------------------------------------------
 st.subheader("📈 Contexto FX")
 
+# ===== COMMUTE MODE =====
 if mode == "Commute (audio)":
     mp3_fp = BytesIO()
     tts = gTTS(lesson["text"], lang="fr")
@@ -43,9 +44,25 @@ if mode == "Commute (audio)":
 
     st.audio(mp3_fp, format="audio/mp3")
 
-st.markdown(f"**🗞️ Frase:** {lesson['text']}")
-st.markdown(f"**❓ Pregunta:** {lesson['question']}")
+    st.markdown(f"**🗞️ Headline:** {lesson['text']}")
 
-if mode == "Review rápido":
-    st.markdown("**🔑 Keywords:**")
-    st.write(", ".join(lesson["keywords"]))
+# ===== DESK MODE =====
+elif mode == "Desk (lectura)":
+    st.markdown(f"**🗞️ Market Brief:** {lesson['text']}")
+
+    if "desk_phrase" in lesson:
+        st.markdown(f"**🗣️ Desk talk:** _{lesson['desk_phrase']}_")
+
+    st.markdown(f"**❓ Trader question:** {lesson['question']}")
+
+    if "follow_up" in lesson:
+        st.markdown(f"**🔮 Follow-up:** {lesson['follow_up']}")
+
+# ===== REVIEW MODE =====
+elif mode == "Review rápido":
+    st.markdown("### 🔑 Keywords")
+    st.write(", ".join(lesson.get("keywords", [])))
+
+    st.markdown("### 🧠 Théorie clé")
+    for t in lesson.get("theory", []):
+        st.markdown(f"- {t}")
