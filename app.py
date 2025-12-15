@@ -46,6 +46,65 @@ Donne une version adaptée en français.
 
     return response.choices[0].message.content
 
+# Función IA para generar un nuevo caso FX
+def generate_new_fx_case(existing_lessons):
+    """
+    Genera UN nuevo caso FX/FI compatible con fx.json
+    usando ejemplos reales como referencia de estilo.
+    """
+
+    # Tomamos 2–3 ejemplos reales para anclar estilo
+    examples = random.sample(existing_lessons, min(3, len(existing_lessons)))
+
+    examples_text = json.dumps(examples, ensure_ascii=False, indent=2)
+
+    prompt = f"""
+Tu es un trader FX & Fixed Income senior dans une banque européenne.
+
+Tâche :
+- Générer UN NOUVEAU cas de marché FX/FI.
+- Même style, même structure que les exemples.
+- Sujet réaliste (BCE, Fed, taux, FX, macro globale).
+- Langage professionnel de trading desk.
+- Pas de fiction, pas de storytelling.
+
+IMPORTANT :
+- Retourne UNIQUEMENT un objet JSON valide.
+- Respecte STRICTEMENT cette structure.
+
+Structure attendue :
+{{
+  "id": "...",
+  "domain": ["FX", "Rates" ou "Macro"],
+  "level": "...",
+  "scenario": "...",
+  "text": "...",
+  "question": "...",
+  "keywords": [...],
+  "theory": [...],
+  "desk_phrase": "...",
+  "follow_up": "..."
+}}
+
+Exemples existants :
+{examples_text}
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3
+    )
+
+    # Convertimos el JSON generado a dict Python
+    new_case = json.loads(response.choices[0].message.content)
+
+    return new_case
+
+# Selector
+use_ai_case = st.checkbox("🧠 Générer un nouveau cas avec l’IA", value=False)
+
+
 # Función IA (bloque 4.3)
 
 level = st.selectbox(
@@ -68,7 +127,11 @@ mode = st.radio(
 with open("content/fx.json", "r", encoding="utf-8") as f:
     fx_data = json.load(f)
 
-lesson = random.choice(fx_data)
+if use_ai_case:
+    lesson = generate_new_fx_case(fx_data)
+else:
+    lesson = random.choice(fx_data)
+
 
 # Uso de IA SOLO cuando tenga sentido
 display_text = lesson["text"]
