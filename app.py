@@ -111,14 +111,99 @@ level = st.selectbox(
     "🎯 Nivel de francés:",
     ["Débutant total", "Intermédiaire", "Desk-ready"]
 )
+# NUEVO 
+
+
+def generate_oral_question(level="beginner"):
+    """
+    Genera una pregunta oral FX / Monetary Policy / Fixed Income
+    orientada a desk profesional.
+    """
+
+    prompt = f"""
+Tu es un senior trader FX & Fixed Income à la BCE.
+
+Objectif :
+- Poser UNE question orale à un junior trader.
+- Niveau : {level}
+- Sujet : FX, politique monétaire, taux d’intérêt.
+- Toujours relié à un événement de marché récent ou typique
+  (BCE, Fed, inflation, croissance, surprises macro).
+
+Contraintes :
+- Question courte, orale, naturelle.
+- Orientation pratique (impact marché).
+- Pas de jargon académique inutile.
+
+Exemple de structure :
+"Suite à [événement], comment cela affecte-t-il
+le taux de change et la courbe des taux ?"
+
+Retourne UNIQUEMENT la question (en français).
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.4
+    )
+
+    return response.choices[0].message.content.strip()
+
+def speak(text):
+    mp3_fp = BytesIO()
+    tts = gTTS(text, lang="fr")
+    tts.write_to_fp(mp3_fp)
+    mp3_fp.seek(0)
+    st.audio(mp3_fp, format="audio/mp3")
+
+def evaluate_answer(question, user_answer, level="beginner"):
+    """
+    Evalúa respuesta como lo haría un desk head.
+    """
+
+    prompt = f"""
+Tu es responsable du desk FX & Rates à la BCE.
+
+Question posée :
+{question}
+
+Réponse du candidat :
+{user_answer}
+
+Évalue selon :
+1. Compréhension macro
+2. Lien politique monétaire → FX → taux
+3. Logique de marché (pas théorie pure)
+4. Clarté de l’expression (français professionnel)
+
+Retour attendu :
+- Verdict global (🟢 OK / 🟠 Moyen / 🔴 Insuffisant)
+- 2–3 points forts/faibles
+- Une reformulation idéale (courte)
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.3
+    )
+
+    return response.choices[0].message.content
+
+
 
 
 # --------------------------------------------------
 # MODE
 # --------------------------------------------------
+#mode = st.radio(
+#    "Selecciona modo:",
+#    ["Commute (audio)", "Desk (lectura)", "Review rápido"]
+#)
 mode = st.radio(
     "Selecciona modo:",
-    ["Commute (audio)", "Desk (lectura)", "Review rápido"]
+    ["Commute (audio)", "Desk (lectura)", "Review rápido", "🎤 Oral Desk Training"]
 )
 
 # --------------------------------------------------
@@ -153,7 +238,6 @@ if mode == "Commute (audio)":
     mp3_fp.seek(0)
 
     st.audio(mp3_fp, format="audio/mp3")
-
     st.markdown(f"**🗞️ Headline:** {display_text}")
 
 # ===== DESK MODE =====
@@ -176,4 +260,31 @@ elif mode == "Review rápido":
     st.markdown("### 🧠 Théorie clé")
     for t in lesson.get("theory", []):
         st.markdown(f"- {t}")
+
+# ===== ORAL DESK TRAINING (NUEVO) =====
+elif mode == "🎤 Oral Desk Training":
+    st.subheader("🎧 Question du desk")
+
+    if st.button("🎙️ Nouvelle question"):
+        question = generate_oral_question(level=user_level)
+        st.session_state["oral_question"] = question
+
+    if "oral_question" in st.session_state:
+        st.markdown(f"**Question :** {st.session_state['oral_question']}")
+        speak(st.session_state["oral_question"])
+
+        user_answer = st.text_area(
+            "🗣️ Ta réponse (comme en entretien):",
+            height=150
+        )
+
+        if st.button("📊 Évaluer ma réponse"):
+            feedback = evaluate_answer(
+                st.session_state["oral_question"],
+                user_answer,
+                level=user_level
+            )
+            st.markdown("### 🧠 Feedback du desk")
+            st.markdown(feedback)
+
 
